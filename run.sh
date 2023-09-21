@@ -1,7 +1,17 @@
 #!/bin/bash
 
+output_name="app.out"
+
+compile_command="gcc \
+main.c \
+bubblesort/bubblesort.c \
+quicksort/quicksort.c \
+counting_sort/counting_sort_openmp.c \
+counting_sort/counting_sort_posix.c \
+-o $output_name"
+
 # Compiles files
-eval "gcc main.c bubblesort.c quicksort.c counting_sort_openmp.c counting_sort_posix.c -o app.out"
+eval $compile_command
 
 # Runs output
-eval "./app.out"
+eval "./$output_name"

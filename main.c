@@ -1,6 +1,6 @@
 #include <stdio.h>
 
 int main() {
-   printf("this is boilerplate of c \n ");
+   printf("this is boilerplate of cc \n ");
    return 0;
 }
