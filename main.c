@@ -33,8 +33,13 @@ int main(int argc, char **argv) {
         elementos[i][j] = rand() % 1000;
 
     gettimeofday(&t1, NULL);
-    for (i = 0; i < num_arrays; i++)
-        bubble(elementos[i],num_elementos);
+    for (i = 0; i < num_arrays; i++){
+      counting_sort_singlethread(elementos[i], num_elementos);
+      //counting_sort_posix(elementos[i], num_elementos);
+      //counting_sort_openmp(elementos[i], num_elementos);
+      //bubble(elementos[i], num_elementos);
+      //quicksort(elementos[i], num_elementos);
+    }
     gettimeofday(&t2, NULL);
     
     t_total = (t2.tv_sec - t1.tv_sec) + ((t2.tv_usec - t1.tv_usec)/1000000.0);
