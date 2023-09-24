@@ -9,7 +9,7 @@ quicksort/quicksort.c \
 counting_sort/counting_sort_openmp.c \
 counting_sort/counting_sort_posix.c \
 counting_sort/counting_sort_singlethread.c \
--o $output_name"
+-o $output_name -pthread"
 
 # Compiles files
 eval "$compile_command"
@@ -21,16 +21,16 @@ if [[ $compilation_exit_code != 0 ]]; then
 fi
 
 # Default values
-param_1="1000"
-param_2="1000"
+num_arrays="800"
+num_elements="100000"
 
 # Verify if 2 parameters were received
 if [ $# -eq 2 ]; then
-    param_1="$1"
-    param_2="$2"
+    num_arrays="$1"
+    num_elements="$2"
 else
-    echo -e "Running with default parameters: $param_1 $param_2\n"
+    echo -e "Running with default parameters: $num_arrays $num_elements\n"
 fi
 
 # Runs output
-eval "./$output_name $param_1 $param_2"
+eval "./$output_name $num_arrays $num_elements"

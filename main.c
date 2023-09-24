@@ -7,6 +7,7 @@
 #include "quicksort/quicksort.h"
 #include "counting_sort/counting_sort.h"
 
+#define MAX_ELEMENT_VALUE 1000
 
 struct FunctionHolder {
     const char *name;
@@ -16,17 +17,20 @@ struct FunctionHolder {
 int main(int argc, char **argv) {
 
     if(argc<3){
-        printf("Digite %s Num_arrays Num_elementos\num_arrays", argv[0]);
+        printf("Input %s num_arrays num_elements\n", argv[0]);
         exit(0);
     }
 
     int num_arrays = atoi(argv[1]);
-    int num_elementos = atoi(argv[2]);	
+    int num_elements = atoi(argv[2]);
+
+    printf("\nNum of arrays: %d", num_arrays);
+    printf("\nEach array will have %d elements.\n", num_elements);
 
     struct FunctionHolder sorting_algorithms[] = {
-      {"Bubblesort", bubble},
+      //{"Bubblesort", bubble}, //ToDo ignoring for tests for now because takes too long
       {"Quicksort", quicksort},
-      {"Counting Sort singlethread", counting_sort_singlethread},
+      {"Counting Sort singlethread", counting_sort_singlethread}, //ToDo it is not necessary for the task
       {"Counting sort POSIX", counting_sort_posix},
       {"Counting sort OpenMP", counting_sort_openmp}
     };
@@ -46,13 +50,13 @@ int main(int argc, char **argv) {
     // Allocates memory
     elementos=(int**)malloc(num_arrays*sizeof(int*));
     for (int i = 0; i < num_arrays; i++) {
-      elementos[i]=(int*)malloc(num_elementos*sizeof(int));
+      elementos[i]=(int*)malloc(num_elements*sizeof(int));
     }
 
     // Asigns random values to arrays
     for (int i = 0; i < num_arrays; i++) {
-      for (int j = 0; j < num_elementos; j++) {
-        elementos[i][j] = rand() % 1000;
+      for (int j = 0; j < num_elements; j++) {
+        elementos[i][j] = rand() % MAX_ELEMENT_VALUE;
       }
     }
     printf("\nArrays of elements created.");
@@ -66,7 +70,7 @@ int main(int argc, char **argv) {
       gettimeofday(&t1[i], NULL);
 
       for (int j = 0; j < num_arrays; j++) {
-        sorting_algorithms[i].func(elementos[i], num_elementos);
+        sorting_algorithms[i].func(elementos[i], num_elements);
       }
 
       gettimeofday(&t2[i], NULL);
