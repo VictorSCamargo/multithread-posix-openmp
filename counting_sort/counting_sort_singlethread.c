@@ -23,29 +23,29 @@ int counting_sort_singlethread(int *array,unsigned int size){
 
     // Initialize count array with all zeros.
     for (int i = 0; i <= max; ++i) {
-    count[i] = 0;
+        count[i] = 0;
     }
 
     // Store the count of each element
     for (int i = 0; i < size; i++) {
-    count[array[i]]++;
+        count[array[i]]++;
     }
 
     // Store the cummulative count of each array
     for (int i = 1; i <= max; i++) {
-    count[i] += count[i - 1];
+        count[i] += count[i - 1];
     }
 
     // Find the index of each element of the original array in count array, and
     // place the elements in output array
     for (int i = size - 1; i >= 0; i--) {
-    output[count[array[i]] - 1] = array[i];
-    count[array[i]]--;
+        output[count[array[i]] - 1] = array[i];
+        count[array[i]]--;
     }
 
     // Copy the sorted elements into original array
     for (int i = 0; i < size; i++) {
-    array[i] = output[i];
+        array[i] = output[i];
     }
 
     return 0;
