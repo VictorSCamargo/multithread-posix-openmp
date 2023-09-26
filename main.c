@@ -14,6 +14,17 @@ struct FunctionHolder {
     int (*func)(int *, unsigned int);
 };
 
+void free_elements_from_memory(int** elements, int num_arrays) {
+  printf("\nFreeing elements from memory...\n");
+
+  for(int i=0;i<num_arrays;i++){
+    free(elements[i]);
+  }
+  free(elements);
+
+  printf("\nFreed elements from memory.");
+}
+
 int main(int argc, char **argv) {
 
     if(argc<3){
@@ -38,7 +49,7 @@ int main(int argc, char **argv) {
 
     printf("\nThere are %d sorting algorithms to be tested.", num_of_algorithms);
 
-    int **elementos;    
+    int **elements;    
     struct timeval t1[num_of_algorithms];
     struct timeval t2[num_of_algorithms];
     double t_total[num_of_algorithms];
@@ -48,15 +59,15 @@ int main(int argc, char **argv) {
 
     printf("\nGenerating test array...");
     // Allocates memory
-    elementos=(int**)malloc(num_arrays*sizeof(int*));
+    elements=(int**)malloc(num_arrays*sizeof(int*));
     for (int i = 0; i < num_arrays; i++) {
-      elementos[i]=(int*)malloc(num_elements*sizeof(int));
+      elements[i]=(int*)malloc(num_elements*sizeof(int));
     }
 
     // Asigns random values to arrays
     for (int i = 0; i < num_arrays; i++) {
       for (int j = 0; j < num_elements; j++) {
-        elementos[i][j] = rand() % MAX_ELEMENT_VALUE;
+        elements[i][j] = rand() % MAX_ELEMENT_VALUE;
       }
     }
     printf("\nArrays of elements created.");
@@ -69,8 +80,18 @@ int main(int argc, char **argv) {
 
       gettimeofday(&t1[i], NULL);
 
+      int exit_code = 0;
+
       for (int j = 0; j < num_arrays; j++) {
-        sorting_algorithms[i].func(elementos[i], num_elements);
+        exit_code = sorting_algorithms[i].func(elements[i], num_elements);
+
+        if (exit_code != 0) {
+          printf("Sorting algorithm %s failed. Ending program.", sorting_algorithms[i].name);
+
+          free_elements_from_memory(elements, num_arrays);
+
+          return 1;
+        }
       }
 
       gettimeofday(&t2[i], NULL);
@@ -79,11 +100,7 @@ int main(int argc, char **argv) {
     }
     printf("\nTests finished.");
 
-    printf("\nFreeing elements from memory...");
-    for(int i=0;i<num_arrays;i++){
-      free(elementos[i]);
-    }
-    free(elementos);
+    free_elements_from_memory(elements, num_arrays);
 
     printf("\nCalculating times...");
     for (int i = 0; i < num_of_algorithms; i++) {

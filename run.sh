@@ -21,7 +21,7 @@ if [[ $compilation_exit_code != 0 ]]; then
 fi
 
 # Default values
-num_arrays="800"
+num_arrays="500"
 num_elements="100000"
 
 # Verify if 2 parameters were received
@@ -34,3 +34,9 @@ fi
 
 # Runs output
 eval "./$output_name $num_arrays $num_elements"
+
+exit_code="$?"
+
+echo -e "\nExit code: $exit_code"
+
+exit $exit_code # Returns last command output code

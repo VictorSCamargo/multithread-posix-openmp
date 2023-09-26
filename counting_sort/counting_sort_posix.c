@@ -52,6 +52,13 @@ int counting_sort_posix(int *array, unsigned int size) {
     output = (int *)malloc(size * sizeof(int));
     count = (int *)calloc(max_value + 1, sizeof(int));
 
+    if (output == NULL || count == NULL) {
+        printf("Failed to allocate memory.\n");
+        free(output);
+        free(count);
+        return 1;
+    }
+
     pthread_t count_threads[MAX_THREADS];
     pthread_t sort_threads[MAX_THREADS];
     struct ThreadArg args[MAX_THREADS];
