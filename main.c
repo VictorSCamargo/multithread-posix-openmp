@@ -55,18 +55,20 @@ int main(int argc, char **argv) {
     double t_total[num_of_algorithms];
 
     //ToDo create param to run this to generate new seed if wanted
-    //srand(time(NULL));
+    srand(time(NULL));
+
+    printf("\nAllocating memory for test elements...");
 
     // Allocates memory for 'elements'
     elements = (int**)malloc(num_arrays * sizeof(int*));
     if (elements == NULL) {
       printf("Failed to allocate memory for 'elements'.\n");
       fflush(stdout);
-      return 1; // Ou qualquer tratamento de erro que você preferir
+      return 1;
     }
 
     for (int i = 0; i < num_arrays; i++) {
-      elements[i] = (int*)malloc(num_elements * sizeof(int));
+      elements[i] = (int*)calloc(num_elements, sizeof(int));
       if (elements[i] == NULL) {
           printf("Failed to allocate memory for 'elements[%d]'.\n", i);
           fflush(stdout);
@@ -80,9 +82,22 @@ int main(int argc, char **argv) {
       }
     }
 
+    printf("\nMemory allocated for test elements.");
+
+    printf("\nGenerating random values for elements...");
+    fflush(stdout);
+
+    for (int i = 0; i < num_arrays; i++) {
+      for (int j = 0; j < num_elements; j++) {
+        elements[i][j] = rand() % MAX_ELEMENT_VALUE;
+      }
+    }
+
+    printf("\nGenerated random values for elements.");
+
     printf("\nStarting tests.");
 
-    int exit_code = 0;
+    volatile int exit_code = 0;
 
     for (int i = 0; i < num_of_algorithms; i++) {
       const char* func_name = sorting_algorithms[i].name;
@@ -99,6 +114,7 @@ int main(int argc, char **argv) {
 
         if (exit_code != 0) {
           printf("Sorting algorithm %s failed. Ending program.", sorting_algorithms[i].name);
+          fflush(stdout);
 
           free_elements_from_memory(elements, num_arrays);
 

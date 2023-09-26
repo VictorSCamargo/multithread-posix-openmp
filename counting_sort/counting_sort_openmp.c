@@ -4,4 +4,5 @@
 
 int counting_sort_openmp(int *array,unsigned int size){
     //ToDo
+    return 0;
 }

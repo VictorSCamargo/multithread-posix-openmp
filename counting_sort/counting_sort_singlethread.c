@@ -60,5 +60,8 @@ int counting_sort_singlethread(int *array,unsigned int size){
         array[i] = output[i];
     }
 
+    free(count);
+    free(output);
+
     return 0;
 }

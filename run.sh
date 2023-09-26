@@ -21,8 +21,13 @@ if [[ $compilation_exit_code != 0 ]]; then
 fi
 
 # Default values
-num_arrays="500"
-num_elements="100000"
+num_arrays="1"
+
+# If you have 8GB RAM, use 100000000
+num_elements="100000000"
+
+# If you have 16GB RAM, you can use 500000000
+#num_elements="500000000"
 
 # Verify if 2 parameters were received
 if [ $# -eq 2 ]; then
