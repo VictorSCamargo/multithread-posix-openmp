@@ -57,33 +57,45 @@ int main(int argc, char **argv) {
     //ToDo create param to run this to generate new seed if wanted
     //srand(time(NULL));
 
-    printf("\nGenerating test array...");
-    // Allocates memory
-    elements=(int**)malloc(num_arrays*sizeof(int*));
-    for (int i = 0; i < num_arrays; i++) {
-      elements[i]=(int*)malloc(num_elements*sizeof(int));
+    // Allocates memory for 'elements'
+    elements = (int**)malloc(num_arrays * sizeof(int*));
+    if (elements == NULL) {
+      printf("Failed to allocate memory for 'elements'.\n");
+      fflush(stdout);
+      return 1; // Ou qualquer tratamento de erro que você preferir
     }
 
-    // Asigns random values to arrays
     for (int i = 0; i < num_arrays; i++) {
-      for (int j = 0; j < num_elements; j++) {
-        elements[i][j] = rand() % MAX_ELEMENT_VALUE;
+      elements[i] = (int*)malloc(num_elements * sizeof(int));
+      if (elements[i] == NULL) {
+          printf("Failed to allocate memory for 'elements[%d]'.\n", i);
+          fflush(stdout);
+
+          for (int j = 0; j < i; j++) {
+              free(elements[j]);
+          }
+          free(elements);
+
+          return 1;
       }
     }
-    printf("\nArrays of elements created.");
 
     printf("\nStarting tests.");
+
+    int exit_code = 0;
+
     for (int i = 0; i < num_of_algorithms; i++) {
       const char* func_name = sorting_algorithms[i].name;
 
       printf("\nTesting %s... ", func_name);
+      fflush(stdout);
 
       gettimeofday(&t1[i], NULL);
 
-      int exit_code = 0;
+      exit_code = 0;
 
       for (int j = 0; j < num_arrays; j++) {
-        exit_code = sorting_algorithms[i].func(elements[i], num_elements);
+        exit_code = sorting_algorithms[i].func(elements[j], num_elements);
 
         if (exit_code != 0) {
           printf("Sorting algorithm %s failed. Ending program.", sorting_algorithms[i].name);
@@ -97,6 +109,7 @@ int main(int argc, char **argv) {
       gettimeofday(&t2[i], NULL);
 
       printf("%s finalized.", func_name);
+      fflush(stdout);
     }
     printf("\nTests finished.");
 

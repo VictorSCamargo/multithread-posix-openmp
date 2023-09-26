@@ -14,4 +14,5 @@ int bubble(int *array,unsigned int size){
       }
     }
   }
+  return 0;
 }

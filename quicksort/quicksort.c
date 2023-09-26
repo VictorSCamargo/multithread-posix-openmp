@@ -4,4 +4,5 @@
 
 int quicksort(int *array,unsigned int size){
     //ToDo
+    return 0;
 }

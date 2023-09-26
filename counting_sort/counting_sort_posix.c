@@ -50,12 +50,17 @@ int counting_sort_posix(int *array, unsigned int size) {
     }
 
     output = (int *)malloc(size * sizeof(int));
+
+    if (output == NULL) {
+        printf("Failed to allocate memory for output.\n");
+        return 1;
+    }
+
     count = (int *)calloc(max_value + 1, sizeof(int));
 
-    if (output == NULL || count == NULL) {
-        printf("Failed to allocate memory.\n");
+    if (count == NULL) {
+        printf("Failed to allocate memory for count.\n");
         free(output);
-        free(count);
         return 1;
     }
 

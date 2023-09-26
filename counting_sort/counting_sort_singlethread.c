@@ -1,11 +1,10 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "counting_sort.h"
 
 //ToDo should be original
 int counting_sort_singlethread(int *array,unsigned int size){
-
-    int output[size];
 
     // Find the largest element of the array
     int max = array[0];
@@ -15,11 +14,24 @@ int counting_sort_singlethread(int *array,unsigned int size){
         }
     }
 
+    int* output = (int *)malloc(size * sizeof(int));
+
+    if (output == NULL) {
+        printf("Failed to allocate memory for output.\n");
+        return 1;
+    }
+
     // The size of count must be at least (max+1) but
     // we cannot declare it as int count(max+1) in C as
     // it does not support dynamic memory allocation.
     // So, its size is provided statically.
-    int count[size];
+    int* count = (int *)calloc(max + 1, sizeof(int));
+
+    if (count == NULL) {
+        printf("Failed to allocate memory for count.\n");
+        free(output);
+        return 1;
+    }
 
     // Initialize count array with all zeros.
     for (int i = 0; i <= max; ++i) {
