@@ -9,7 +9,7 @@ quicksort/quicksort.c \
 counting_sort/counting_sort_openmp.c \
 counting_sort/counting_sort_posix.c \
 counting_sort/counting_sort_singlethread.c \
--o $output_name -pthread"
+-o $output_name -pthread -fopenmp"
 
 # Compiles files
 eval "$compile_command"
