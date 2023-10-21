@@ -3,13 +3,14 @@
 #include <omp.h>
 #include "counting_sort.h"
 
-//ToDo should be original
+
 int counting_sort_openmp(int *array, unsigned int size){
 
-    omp_set_num_threads(4); // Defina o número desejado de threads aqui
+    omp_set_num_threads(4); // Número de threads
 
-    // Find the largest element of the array
+    //Acha o maior número do array
     int max = array[0];
+    #pragma omp parallel for
     for (int i = 1; i < size; i++) {
         if (array[i] > max) {
             max = array[i];
@@ -23,10 +24,7 @@ int counting_sort_openmp(int *array, unsigned int size){
         return 1;
     }
 
-    // The size of count must be at least (max+1) but
-    // we cannot declare it as int count(max+1) in C as
-    // it does not support dynamic memory allocation.
-    // So, its size is provided statically.
+    //Tamanho é definido de forma estática
     int* count = (int *)calloc(max + 1, sizeof(int));
 
     if (count == NULL) {
@@ -35,33 +33,32 @@ int counting_sort_openmp(int *array, unsigned int size){
         return 1;
     }
 
-    // Initialize count array with all zeros.
+    //Inicia o array de conta com zeros
     #pragma omp parallel for
     for (int i = 0; i <= max; ++i) {
         count[i] = 0;
     }
 
-    // Store the count of each element
+    //Guarda o número de ocorrências de cada item
     #pragma omp parallel for
     for (int i = 0; i < size; i++) {
         count[array[i]]++;
     }
 
-    // Store the cummulative count of each array
+    //Guarda a soma do valor em si com o imediatamente anterior a ele do array
     #pragma omp parallel for
     for (int i = 1; i <= max; i++) {
         count[i] += count[i - 1];
     }
 
-    // Find the index of each element of the original array in count array, and
-    // place the elements in output array
+    //Acha o index dos elementos do array original no array de conta e guarda no array output
     #pragma omp parallel for
     for (int i = size - 1; i >= 0; i--) {
         output[count[array[i]] - 1] = array[i];
         count[array[i]]--;
     }
 
-    // Copy the sorted elements into original array
+    //Copia os elementos ordenados no array original
     #pragma omp parallel for
     for (int i = 0; i < size; i++) {
         array[i] = output[i];

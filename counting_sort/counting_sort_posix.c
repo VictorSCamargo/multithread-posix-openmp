@@ -4,7 +4,7 @@
 
 #include "counting_sort.h"
 
-#define MAX_THREADS 4 // Define num of threads to be used
+#define MAX_THREADS 4 // Número de threads
 
 int max_value;
 int *count;
@@ -42,7 +42,7 @@ void *sorting_thread(void *arg) {
 int counting_sort_posix(int *array, unsigned int size) {
     input_array = array;
 
-    // Find the largest element of the array
+    //Acha o maior número do array
     for (int i = 0; i < size; i++) {
         if (input_array[i] > max_value) {
             max_value = input_array[i];
@@ -70,36 +70,36 @@ int counting_sort_posix(int *array, unsigned int size) {
 
     int part_size = size / MAX_THREADS;
 
-    // Init counting threads
+    //Inicia as threads de "conta"
     for (int i = 0; i < MAX_THREADS; i++) {
         args[i].start = i * part_size;
         args[i].end = (i == MAX_THREADS - 1) ? size : (i + 1) * part_size;
         pthread_create(&count_threads[i], NULL, counting_thread, &args[i]);
     }
 
-    // Wait for counting threads
+    //Espera threads de conta darem join
     for (int i = 0; i < MAX_THREADS; i++) {
         pthread_join(count_threads[i], NULL);
     }
 
-    // Store the cummulative count of each array
+    //Guarda a soma do valor em si com o imediatamente anterior a ele do array (para cada item a ser ordenado)
     for (int i = 1; i <= max_value; i++) {
         count[i] += count[i - 1];
     }
 
-    // Init sorting threads
+    //Inicia as threads de "ordenação"
     for (int i = 0; i < MAX_THREADS; i++) {
         args[i].start = i * part_size;
         args[i].end = (i == MAX_THREADS - 1) ? size : (i + 1) * part_size;
         pthread_create(&sort_threads[i], NULL, sorting_thread, &args[i]);
     }
 
-    // Wait for sorting threads
+    //Espera threads de ordenação darem join
     for (int i = 0; i < MAX_THREADS; i++) {
         pthread_join(sort_threads[i], NULL);
     }
 
-    // Copy the sorted elements into original array
+    //Copia os elementos ordenados no array original
     for (int i = 0; i < size; i++) {
         input_array[i] = output[i];
     }
