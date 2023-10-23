@@ -1,12 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
-
 #include "counting_sort.h"
 
-//ToDo should be original
+
 int counting_sort_singlethread(int *array,unsigned int size){
 
-    // Find the largest element of the array
+    //Acha o maior número do array
     int max = array[0];
     for (int i = 1; i < size; i++) {
         if (array[i] > max) {
@@ -21,10 +20,7 @@ int counting_sort_singlethread(int *array,unsigned int size){
         return 1;
     }
 
-    // The size of count must be at least (max+1) but
-    // we cannot declare it as int count(max+1) in C as
-    // it does not support dynamic memory allocation.
-    // So, its size is provided statically.
+    //Tamanho é definido de forma estática
     int* count = (int *)calloc(max + 1, sizeof(int));
 
     if (count == NULL) {
@@ -33,29 +29,28 @@ int counting_sort_singlethread(int *array,unsigned int size){
         return 1;
     }
 
-    // Initialize count array with all zeros.
+    //Inicia o array de conta com zeros
     for (int i = 0; i <= max; ++i) {
         count[i] = 0;
     }
 
-    // Store the count of each element
+    //Guarda o número de ocorrências de cada item
     for (int i = 0; i < size; i++) {
         count[array[i]]++;
     }
 
-    // Store the cummulative count of each array
+    //Guarda a soma do valor em si com o imediatamente anterior a ele do array
     for (int i = 1; i <= max; i++) {
         count[i] += count[i - 1];
     }
 
-    // Find the index of each element of the original array in count array, and
-    // place the elements in output array
+    //Acha o index dos elementos do array original no array de conta e guarda no array output
     for (int i = size - 1; i >= 0; i--) {
         output[count[array[i]] - 1] = array[i];
         count[array[i]]--;
     }
 
-    // Copy the sorted elements into original array
+    //Copia os elementos ordenados no array original
     for (int i = 0; i < size; i++) {
         array[i] = output[i];
     }
