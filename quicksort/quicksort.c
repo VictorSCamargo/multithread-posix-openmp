@@ -3,7 +3,7 @@
 #include <time.h> // time
 #include "quicksort.h"
 
-// function that should change the position between the two elements
+// função que realiza a troca entre dois elementos
 void troca(int *array, int i, int j)
 {
 	int aux = array[i];
@@ -11,7 +11,7 @@ void troca(int *array, int i, int j)
 	array[j] = aux;
 }
 
-// partition and return the index of pivô
+// particiona e retorna o índice do pivô
 int particiona(int *array, int inicio, int fim)
 {
 	int pivo, pivo_indice, i;
@@ -33,7 +33,7 @@ int particiona(int *array, int inicio, int fim)
 	return pivo_indice;
 }
 
-// choose a aleatory pivo for avoid the worst case of quicksort
+// escolhe um pivô aleatório para evitar o pior caso do quicksort
 int particiona_random(int *array, int inicio, int fim)
 {
 	int pivo_indice = (rand() % (fim - inicio + 1)) + inicio;
@@ -43,13 +43,14 @@ int particiona_random(int *array, int inicio, int fim)
 	return particiona(array, inicio, fim);
 }
 
-// execute the quick_sort algorithm
+// Executa o algoritmo quick sort
 void quick_sort(int *array, int inicio, int fim)
 {
 	if(inicio < fim)
 	{
 		int pivo_indice = particiona_random(array, inicio, fim);
 		
+		// chamadas recursivas quick_sort
 		quick_sort(array, inicio, pivo_indice - 1);
 		quick_sort(array, pivo_indice + 1, fim);
 	}
@@ -58,9 +59,6 @@ void quick_sort(int *array, int inicio, int fim)
 int quick(int *array,unsigned int size)
 {
     quick_sort(array, 0, size - 1);
-	int i;
-	for(i = 0; i < size; i++)
- 		printf("%d ", array[i]);
 
 	return 0;
 }
