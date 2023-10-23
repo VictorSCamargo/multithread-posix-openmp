@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 
     struct FunctionHolder sorting_algorithms[] = {
       //{"Bubblesort", bubble}, //ToDo ignoring for tests for now because takes too long
-      {"Quicksort", quicksort},
+      {"Quicksort", quick},
       {"Counting Sort singlethread", counting_sort_singlethread}, //ToDo it is not necessary for the task
       {"Counting sort POSIX", counting_sort_posix},
       {"Counting sort OpenMP", counting_sort_openmp}
