@@ -1,4 +1,10 @@
 # multithread posix openmp
+
+This program tests the time of each defined sorting algorithm to sort data arrays.
+
+It is possible to test one single big array or an array of arrays.
+
+Made during the Parallel and Distributed Programming discipline.
  
 ## Run
 
